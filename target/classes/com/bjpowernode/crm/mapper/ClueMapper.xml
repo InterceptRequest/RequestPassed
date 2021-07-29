@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bjpowernode.crm.mapper.ClueMapper">
+    <sql id="searchSql">
+        <where>
+            <if test="map.fullName != null and map.fullName != '' ">
+               and  fullName like concat('%',#{map.fullName},'%')
+            </if>
+            <if test="map.company != null and map.company != ''">
+                and company like concat('%',#{map.company},'%')
+            </if>
+            <if test="map.phone != null and map.phone != ''">
+                and phone like concat('%',#{map.phone},'%')
+            </if>
+
+            <if test="map.owner != null and map.owner !=''">
+                and owner like concat('%',#{map.owner},'%')
+            </if>
+            <if test="map.mphone != null and map.mphone != ''">
+                and mphone like concat('%',#{map.mphone},'%')
+            </if>
+
+            <if test="map.source != null and map.source !=''">
+                and source = #{map.source}
+            </if>
+            <if test="map.state != null and map.state !=''">
+                and state = #{map.state}
+            </if>
+        </where>
+    </sql>
+    <select id="getCount" resultType="Integer">
+        select count(*) from tbl_clue       <include refid="searchSql"/>
+    </select>
+
+    <select id="getData" resultType="map">
+        select * from tbl_clue <include refid="searchSql"/>
+        limit #{indexLimit},#{rowsPerPage}
+    </select>
+
+
+</mapper>
